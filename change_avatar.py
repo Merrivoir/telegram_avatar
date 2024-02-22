@@ -10,11 +10,11 @@ import time
 celsius = '°C'
 PATH = 'temperature_images'
 
-location = 524901  # moscow
-openweather_api_key = 'abcdefghi'
+location = 1526384  # Almaty
+openweather_api_key = 'c96076b2dcec72e588a42501bbb2f1ac'
 
-telegram_api_id = 1234567
-telegram_api_hash = 'abcdefghi'
+telegram_api_id = 29276528
+telegram_api_hash = '9d4126e6cdcbb94671411a6f5af4d8fd'
 
 FONT_SIZE = 80
 TEXT_Y_POSITION = 75
