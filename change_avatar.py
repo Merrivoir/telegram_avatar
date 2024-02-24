@@ -17,7 +17,7 @@ telegram_api_id = 21367964
 telegram_api_hash = '990665185b0e0fb35005f475047797d3'
 
 FONT_SIZE = 100
-TEXT_Y_POSITION = 80
+TEXT_Y_POSITION = 45
 
 def interpolate_color(color1, color2, factor):
     # Функция для интерполяции цветов между двумя заданными цветами
@@ -40,33 +40,49 @@ def map_temperature_to_color(temperature, min_temp, max_temp):
     interpolated_color = interpolate_color(start_color, end_color, factor)
     return interpolated_color
 
-# create all avatars
-for temperature in range(-99, 99):
-    background_color = map_temperature_to_color(temperature, -25, 35)
-    raw = Image.new('RGBA', (250, 250), background_color)
-    parsed = ImageDraw.Draw(raw)
-    length = len(str(temperature))
-    if length == 1:
-        x_start = 54
-    if length == 2:
-        x_start = 25
-    if length == 3:
-        x_start = 5
 
-    font = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_SIZE)
-    parsed.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font)
-    raw.save(f'{PATH}/{temperature}.png', "PNG")
-
-
-""" def get_temperature(weather_data):
+def get_temperature(weather_data):
     return round(weather_data['main']['temp'])
+
+def get_feels(weather_data):
+    return round(weather_data['main']['feels_like'])
 
 
 def get_weather(location, api_key):
-    url = f'https://api.openweathermap.org/data/2.5/weather?id={location}&units=metric&appid={api_key}'
-    r = requests.get(url)
-    return r.json() """
+    """ url = f'https://api.openweathermap.org/data/2.5/weather?id={location}&units=metric&appid={api_key}'
+    r = requests.get(url) """
+    r1 = {"coord":{"lon":76.95,"lat":43.25},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"stations","main":{"temp":266.1,"feels_like":261.18,"temp_min":266.1,"temp_max":266.1,"pressure":1030,"humidity":86},"visibility":1000,"wind":{"speed":3,"deg":340},"clouds":{"all":100},"dt":1708772797,"sys":{"type":1,"id":8818,"country":"KZ","sunrise":1708738694,"sunset":1708777992},"timezone":21600,"id":1526384,"name":"Almaty","cod":200}
+    return r1.json()
 
+def generate_temperature_image(temperature, feels, celsius="°C"):
+    # Создаем изображение с заданным размером
+    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -100, 100))
+    draw = ImageDraw.Draw(image)
+    
+    # Преобразуем температуру в строку
+    temperature_str = str(temperature)
+    
+    # Определяем начальную позицию текста в зависимости от длины строки
+    if len(temperature_str) == 1:
+        x_start = 65
+    elif len(temperature_str) == 2:
+        x_start = 40
+    else:
+        x_start = 20
+    
+    # Загружаем шрифт
+    font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", 100)
+    font_add = ImageFont.truetype("FrozenCrystalAcademy.otf", 60)
+    
+    # Рисуем текст на изображении
+    draw.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font_main)
+    draw.text((x_start + 40, 152), f'{feels}{celsius}', align="center", font=font_add)
+    
+    draw.save(f'temp.png', "PNG")
+
+    
+    
+    
 
 """ client = TelegramClient('1', telegram_api_id, telegram_api_hash)
 client.start()
@@ -76,13 +92,18 @@ last_temperature = -274
 while True:
     weather_data = get_weather(location, openweather_api_key)
     temperature = get_temperature(weather_data)
-    print(last_temperature, temperature)
+    feels = get_feels(weather_data)
+    print(last_temperature, temperature, feels)
     if temperature == last_temperature:
         time.sleep(15 * 60)
         continue
-
+    
+    generate_temperature_image(temperature, feels)
+    
     client(DeletePhotosRequest(client.get_profile_photos('me')))
-    file = client.upload_file(f'{PATH}/{temperature}.png')
-    client(UploadProfilePhotoRequest(file))
+    temper = client.upload_file(f'temp.png')
+    
+    client(UploadProfilePhotoRequest(file=temper))
     last_temperature = temperature
+    
     time.sleep(15 * 60) """
