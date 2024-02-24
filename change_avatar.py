@@ -16,8 +16,10 @@ openweather_api_key = 'c96076b2dcec72e588a42501bbb2f1ac'
 telegram_api_id = 21367964
 telegram_api_hash = '990665185b0e0fb35005f475047797d3'
 
-FONT_SIZE = 100
-TEXT_Y_POSITION = 45
+FONT_MAIN_SIZE = 90
+FONT_ADD_SIZE = 40
+TEXT_Y_POSITION = 55
+TEXT_ADD_Y_POSITION = 160
 
 def interpolate_color(color1, color2, factor):
     # Функция для интерполяции цветов между двумя заданными цветами
@@ -49,12 +51,12 @@ def get_feels(weather_data):
 
 
 def get_weather(location, api_key):
-    """ url = f'https://api.openweathermap.org/data/2.5/weather?id={location}&units=metric&appid={api_key}'
-    r = requests.get(url) """
+    url = f'https://api.openweathermap.org/data/2.5/weather?id={location}&units=metric&appid={api_key}'
+    r = requests.get(url)
     r1 = {"coord":{"lon":76.95,"lat":43.25},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"stations","main":{"temp":266.1,"feels_like":261.18,"temp_min":266.1,"temp_max":266.1,"pressure":1030,"humidity":86},"visibility":1000,"wind":{"speed":3,"deg":340},"clouds":{"all":100},"dt":1708772797,"sys":{"type":1,"id":8818,"country":"KZ","sunrise":1708738694,"sunset":1708777992},"timezone":21600,"id":1526384,"name":"Almaty","cod":200}
-    return r1.json()
+    return r.json()
 
-def generate_temperature_image(temperature, feels, celsius="°C"):
+def generate_temperature_image(temperature, feels):
     # Создаем изображение с заданным размером
     image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -100, 100))
     draw = ImageDraw.Draw(image)
@@ -71,29 +73,28 @@ def generate_temperature_image(temperature, feels, celsius="°C"):
         x_start = 20
     
     # Загружаем шрифт
-    font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", 100)
-    font_add = ImageFont.truetype("FrozenCrystalAcademy.otf", 60)
+    font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_MAIN_SIZE)
+    font_add = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_ADD_SIZE)
     
     # Рисуем текст на изображении
     draw.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font_main)
-    draw.text((x_start + 40, 152), f'{feels}{celsius}', align="center", font=font_add)
+    draw.text((x_start + 54, TEXT_ADD_Y_POSITION), f'{feels}{celsius}', align="center", font=font_add)
     
-    draw.save(f'temp.png', "PNG")
+    image.save(f'temp.png', "PNG")
 
-    
-    
-    
-
-""" client = TelegramClient('1', telegram_api_id, telegram_api_hash)
+client = TelegramClient('1', telegram_api_id, telegram_api_hash)
 client.start()
 
 last_temperature = -274
 
 while True:
+
     weather_data = get_weather(location, openweather_api_key)
     temperature = get_temperature(weather_data)
     feels = get_feels(weather_data)
+    
     print(last_temperature, temperature, feels)
+    
     if temperature == last_temperature:
         time.sleep(15 * 60)
         continue
@@ -106,4 +107,4 @@ while True:
     client(UploadProfilePhotoRequest(file=temper))
     last_temperature = temperature
     
-    time.sleep(15 * 60) """
+    time.sleep(15 * 60)
