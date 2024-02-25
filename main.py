@@ -12,8 +12,8 @@ celsius = '°C'
 location = 1526384  # Almaty
 
 FONT_MAIN_SIZE = 90
-FONT_ADD_SIZE = 40
-TEXT_Y_POSITION = 55
+FONT_ADD_SIZE = 45
+TEXT_Y_POSITION = 60
 TEXT_ADD_Y_POSITION = 160
 
 def interpolate_color(color1, color2, factor):
@@ -63,7 +63,7 @@ def get_weather(location, api_key):
 
 def generate_temperature_image(temperature, feels):
     # Создаем изображение с заданным размером
-    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -30, 40))
+    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -20, 20))
     draw = ImageDraw.Draw(image)
     
     # Преобразуем температуру в строку
@@ -71,9 +71,9 @@ def generate_temperature_image(temperature, feels):
     
     # Определяем начальную позицию текста в зависимости от длины строки
     if len(temperature_str[0]) == 1:
-        x_start = 65
+        x_start = 62
     elif len(temperature_str[0]) == 2:
-        x_start = 40
+        x_start = 36
     else:
         x_start = 20
 
@@ -82,7 +82,7 @@ def generate_temperature_image(temperature, feels):
     elif len(temperature_str[1]) == 2:
         x_add_start = 90
     else:
-        x_add_start = 50
+        x_add_start = 70
     
     # Загружаем шрифт
     font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_MAIN_SIZE)
