@@ -13,8 +13,8 @@ PATH = 'temperature_images'
 location = 1526384  # Almaty
 openweather_api_key = 'c96076b2dcec72e588a42501bbb2f1ac'
 
-telegram_api_id = 21367964
-telegram_api_hash = '990665185b0e0fb35005f475047797d3'
+telegram_api_id = 111111111
+telegram_api_hash = '321321f32dsf3es51f32ae1f3as5e'
 
 FONT_MAIN_SIZE = 90
 FONT_ADD_SIZE = 40
