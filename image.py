@@ -36,7 +36,7 @@ def map_temperature_to_color(temperature, min_temp, max_temp):
 
 def generate_temperature_image(temperature, feels):
     # Создаем изображение с заданным размером
-    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -30, 40))
+    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -20, 20))
     draw = ImageDraw.Draw(image)
     
     # Преобразуем температуру в строку
@@ -56,7 +56,7 @@ def generate_temperature_image(temperature, feels):
     
     # Рисуем текст на изображении
     draw.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font_main)
-    draw.text((20, TEXT_ADD_Y_POSITION), f'{feels}{celsius} туман', align="center", font=font_add)
+    draw.text((12, TEXT_ADD_Y_POSITION), f'{feels}{celsius} mist', align="center", font=font_add)
     
     image.save(f'temp-a.png', "PNG")
 

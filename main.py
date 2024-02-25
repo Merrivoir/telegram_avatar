@@ -48,7 +48,17 @@ def get_feels(weather_data):
 def get_weather(location, api_key):
     url = f'https://api.openweathermap.org/data/2.5/weather?id={location}&units=metric&appid={api_key}'
     r = requests.get(url)
-    r1 = {"coord":{"lon":76.95,"lat":43.25},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"stations","main":{"temp":266.1,"feels_like":261.18,"temp_min":266.1,"temp_max":266.1,"pressure":1030,"humidity":86},"visibility":1000,"wind":{"speed":3,"deg":340},"clouds":{"all":100},"dt":1708772797,"sys":{"type":1,"id":8818,"country":"KZ","sunrise":1708738694,"sunset":1708777992},"timezone":21600,"id":1526384,"name":"Almaty","cod":200}
+    """ r1 = {
+        "coord": {"lon":76.95,"lat":43.25},
+        "weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],
+        "base":"stations",
+        "main":{"temp":266.1,"feels_like":261.18,"temp_min":266.1,"temp_max":266.1,"pressure":1030,"humidity":86},
+        "visibility":1000,
+        "wind":{"speed":3,"deg":340},
+        "clouds":{"all":100},
+        "dt":1708772797,
+        "sys":{"type":1,"id":8818,"country":"KZ","sunrise":1708738694,"sunset":1708777992},
+        "timezone":21600,"id":1526384,"name":"Almaty","cod":200} """
     return r.json()
 
 def generate_temperature_image(temperature, feels):
