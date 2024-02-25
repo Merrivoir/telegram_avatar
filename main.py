@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -- coding: utf-8 --
-
-from telethon import TelegramClient, sync
-from telethon.tl.functions.photos import UploadProfilePhotoRequest, DeletePhotosRequest
-import requests
-from PIL import ImageDraw, Image, ImageFont
 import time
+import requests
+import logging
+from telethon import TelegramClient, sync, errors
+from telethon.tl.functions.photos import UploadProfilePhotoRequest, DeletePhotosRequest
+from PIL import ImageDraw, Image, ImageFont
 from varenv import id_main, hash_main, weather_key
 
 celsius = '°C'

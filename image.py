@@ -60,6 +60,6 @@ def generate_temperature_image(temperature, feels):
     
     image.save(f'temp-a.png', "PNG")
 
-temperature = -17
-feels = -24
+temperature = 32
+feels = 36
 generate_temperature_image(temperature, feels)
