@@ -1,2 +1,2 @@
 # telegram_avatar
-draw moscow air temperature on telegram avatar
+draw air temperature on telegram avatar
