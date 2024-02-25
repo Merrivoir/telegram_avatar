@@ -1,5 +1,18 @@
 from PIL import Image, ImageDraw, ImageFont
 
+celsius = '°C'
+
+location = 1526384  # Almaty
+openweather_api_key = 'c96076b2dcec72e588a42501bbb2f1ac'
+
+telegram_api_id = 21367964
+telegram_api_hash = '990665185b0e0fb35005f475047797d3'
+
+FONT_MAIN_SIZE = 90
+FONT_ADD_SIZE = 48
+TEXT_Y_POSITION = 55
+TEXT_ADD_Y_POSITION = 160
+
 def interpolate_color(color1, color2, factor):
     # Функция для интерполяции цветов между двумя заданными цветами
     return (
@@ -21,31 +34,32 @@ def map_temperature_to_color(temperature, min_temp, max_temp):
     interpolated_color = interpolate_color(start_color, end_color, factor)
     return interpolated_color
 
-def generate_temperature_image(temperature, font_path="FrozenCrystalAcademy.otf", font_size=20, text_y_position=100, celsius="°C"):
+def generate_temperature_image(temperature, feels):
     # Создаем изображение с заданным размером
-    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -100, 100))
+    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -30, 40))
     draw = ImageDraw.Draw(image)
     
     # Преобразуем температуру в строку
-    temperature_str = str(temperature)
+    temperature_str = str(temperature), str(feels)
     
     # Определяем начальную позицию текста в зависимости от длины строки
-    if len(temperature_str) == 1:
+    if len(temperature_str[0]) == 1:
         x_start = 65
-    elif len(temperature_str) == 2:
+    elif len(temperature_str[0]) == 2:
         x_start = 40
     else:
         x_start = 20
     
     # Загружаем шрифт
-    font = ImageFont.truetype(font_path, font_size)
+    font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_MAIN_SIZE)
+    font_add = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_ADD_SIZE)
     
     # Рисуем текст на изображении
-    draw.text((x_start, text_y_position), f'{temperature_str}{celsius}', fill=(255, 255, 255), align="center", font=font)
+    draw.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font_main)
+    draw.text((20, TEXT_ADD_Y_POSITION), f'{feels}{celsius} туман', align="center", font=font_add)
     
-    return image
+    image.save(f'temp-a.png', "PNG")
 
-# Пример использования функции
-temperature = -9
-image = generate_temperature_image(temperature)
-image.show()
+temperature = -17
+feels = -24
+generate_temperature_image(temperature, feels)

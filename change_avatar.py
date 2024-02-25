@@ -6,15 +6,10 @@ from telethon.tl.functions.photos import UploadProfilePhotoRequest, DeletePhotos
 import requests
 from PIL import ImageDraw, Image, ImageFont
 import time
+from varenv import id_main, hash_main, weather_key
 
 celsius = '°C'
-PATH = 'temperature_images'
-
 location = 1526384  # Almaty
-openweather_api_key = 'c96076b2dcec72e588a42501bbb2f1ac'
-
-telegram_api_id = 21367964
-telegram_api_hash = '990665185b0e0fb35005f475047797d3'
 
 FONT_MAIN_SIZE = 90
 FONT_ADD_SIZE = 40
@@ -58,19 +53,26 @@ def get_weather(location, api_key):
 
 def generate_temperature_image(temperature, feels):
     # Создаем изображение с заданным размером
-    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -100, 100))
+    image = Image.new('RGBA', (250, 250), map_temperature_to_color(temperature, -30, 40))
     draw = ImageDraw.Draw(image)
     
     # Преобразуем температуру в строку
-    temperature_str = str(temperature)
+    temperature_str = str(temperature), str(feels)
     
     # Определяем начальную позицию текста в зависимости от длины строки
-    if len(temperature_str) == 1:
+    if len(temperature_str[0]) == 1:
         x_start = 65
-    elif len(temperature_str) == 2:
+    elif len(temperature_str[0]) == 2:
         x_start = 40
     else:
         x_start = 20
+
+    if len(temperature_str[1]) == 1:
+        x_add_start = 110
+    elif len(temperature_str[1]) == 2:
+        x_add_start = 90
+    else:
+        x_add_start = 50
     
     # Загружаем шрифт
     font_main = ImageFont.truetype("FrozenCrystalAcademy.otf", FONT_MAIN_SIZE)
@@ -78,18 +80,18 @@ def generate_temperature_image(temperature, feels):
     
     # Рисуем текст на изображении
     draw.text((x_start, TEXT_Y_POSITION), f'{temperature}{celsius}', align="center", font=font_main)
-    draw.text((x_start + 54, TEXT_ADD_Y_POSITION), f'{feels}{celsius}', align="center", font=font_add)
+    draw.text((x_add_start, TEXT_ADD_Y_POSITION), f'{feels}{celsius}', align="center", font=font_add)
     
     image.save(f'temp.png', "PNG")
 
-client = TelegramClient('1', telegram_api_id, telegram_api_hash)
+client = TelegramClient('further_session', id_main, hash_main)
 client.start()
 
 last_temperature = -274
 
 while True:
 
-    weather_data = get_weather(location, openweather_api_key)
+    weather_data = get_weather(location, weather_key)
     temperature = get_temperature(weather_data)
     feels = get_feels(weather_data)
     
