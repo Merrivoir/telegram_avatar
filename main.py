@@ -98,6 +98,7 @@ client = TelegramClient('further_session', id_main, hash_main)
 client.start()
 
 last_temperature = -274
+last_feels = -274
 
 while True:
 
@@ -107,8 +108,8 @@ while True:
     
     print(last_temperature, temperature, feels)
     
-    if temperature == last_temperature:
-        time.sleep(15 * 60)
+    if temperature == last_temperature & feels == last_feels:
+        time.sleep(10 * 60)
         continue
     
     generate_temperature_image(temperature, feels)
@@ -118,5 +119,6 @@ while True:
     
     client(UploadProfilePhotoRequest(file=temper))
     last_temperature = temperature
+    last_feels = feels
     
-    time.sleep(15 * 60)
+    time.sleep(20 * 60)
