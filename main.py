@@ -103,6 +103,8 @@ last_feels = -274
 while True:
 
     weather_data = get_weather(location, weather_key)
+    print(location)
+    print(weather_key)
     temperature = get_temperature(weather_data)
     feels = get_feels(weather_data)
     

@@ -59,7 +59,3 @@ def generate_temperature_image(temperature, feels):
     draw.text((12, TEXT_ADD_Y_POSITION), f'{feels}{celsius} mist', align="center", font=font_add)
     
     image.save(f'temp-a.png', "PNG")
-
-temperature = 32
-feels = 36
-generate_temperature_image(temperature, feels)
